@@ -24,6 +24,7 @@ public class WriteToFile {
             JSONObject playerJSONObject = new JSONObject();
 
             playerJSONObject.put("name", cacheMap.getValue().getName());
+            playerJSONObject.put("TotalDamage", cacheMap.getValue().getTotalDamage());
 
             playerStats.put(cacheMap.getKey(),playerJSONObject);
             //playerJSONArray.add(playerJSONObject);

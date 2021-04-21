@@ -33,23 +33,27 @@ public class ReadFromFile {
 
                 JSONObject valuesPlayer = (JSONObject) playersList.get(key);
                 String name = (String) valuesPlayer.get("name");
+                double totalDamage = (double) valuesPlayer.get("TotalDamage");
 
-                PlayerCache playerCache = dataManager.getPlayerCache(name);
-                SaveStats saveStats = (SaveStats) Bukkit.getServer().getPluginManager().getPlugin("SaveStats");
-                WorldEdit worldEdit = (WorldEdit) Bukkit.getServer().getPluginManager().getPlugin("WorldEdit");
+                dataManager.getPlayerCache(name).addTotalDamage(totalDamage);
+
+                //SaveStats saveStats = (SaveStats) Bukkit.getServer().getPluginManager().getPlugin("SaveStats");
+                //WorldEdit worldEdit = (WorldEdit) Bukkit.getServer().getPluginManager().getPlugin("WorldEdit");
 
                 //Instancja worldedita
-                WorldEdit.getInstance();//i tak mają getInstance xD ale ciii
+                //WorldEdit.getInstance();//i tak mają getInstance xD ale ciii
                 //jeśli jakieś API pluginu nie ma getInstance() możesz w ten sposób pobrać ją
                 //Po co ją pobierać? Co można z nią zrobić?
                 //Możesz wykorzystać wszystkie metody z tej instancji
-                EditSessionFactory editSessionFactory = worldEdit.getEditSessionFactory();
-                editSessionFactory.getEditSession(worldEdit.get), 100);
+                //EditSessionFactory editSessionFactory = worldEdit.getEditSessionFactory();
+                //editSessionFactory.getEditSession(worldEdit.get), 100);
                 //???!?!?!??
                 // tak można pobrać główną instację każdego pluginu
                 //Po co mi ona tutaj?nwxD
 
                 //Wszystko w pętli podczas wczytywnia pliku XDD
+
+                //Dobra dobra cwaniaczku chcę teraz spróbować zrobić nową porządkną fukncje!!!!
             }
 
         } catch (ParseException | IOException e) {

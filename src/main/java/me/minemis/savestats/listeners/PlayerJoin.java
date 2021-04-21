@@ -16,8 +16,6 @@ public class PlayerJoin implements Listener {
         SaveStats saveStats = SaveStats.getInstance();
         DataManager dataManager = saveStats.getDataManager();
         dataManager.getPlayerCache(event.getPlayer().getName());
-        Logger log = Bukkit.getLogger();
-        log.info("Działa!");
     }
 
 }

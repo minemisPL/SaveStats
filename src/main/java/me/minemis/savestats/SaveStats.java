@@ -1,5 +1,6 @@
 package me.minemis.savestats;
 
+import me.minemis.savestats.listeners.DmgCounter;
 import me.minemis.savestats.listeners.PlayerJoin;
 import me.minemis.savestats.system.DataManager;
 import me.minemis.savestats.system.ReadFromFile;
@@ -21,6 +22,7 @@ public class SaveStats extends JavaPlugin {
         pm = this.getServer().getPluginManager();
 
         pm.registerEvents(new PlayerJoin(), this);
+        pm.registerEvents(new DmgCounter(), this);
 
     }
 
