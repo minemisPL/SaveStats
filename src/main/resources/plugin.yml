@@ -1,0 +1,3 @@
+name: SaveStats
+version: ${project.version}
+main: me.minemis.savestats.SaveStats
