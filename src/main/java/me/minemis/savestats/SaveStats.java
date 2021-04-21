@@ -1,5 +1,6 @@
 package me.minemis.savestats;
 
+import me.minemis.savestats.commands.ResetServerData;
 import me.minemis.savestats.commands.Showtime;
 import me.minemis.savestats.commands.TotalTime;
 import me.minemis.savestats.listeners.PlayerQuit;
@@ -29,12 +30,15 @@ public class SaveStats extends JavaPlugin {
 
         PluginCommand showtime = this.getCommand("showtime");
         PluginCommand totaltime = this.getCommand("totaltime");
+        PluginCommand resetServerData = this.getCommand("resetServerData");
 
         pm.registerEvents(new PlayerJoin(), this);
         pm.registerEvents(new PlayerQuit(), this);
         pm.registerEvents(new DmgCounter(), this);
+
         showtime.setExecutor(new Showtime());
         totaltime.setExecutor(new TotalTime());
+        resetServerData.setExecutor(new ResetServerData());
     }
 
     @Override

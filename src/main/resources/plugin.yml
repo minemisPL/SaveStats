@@ -10,3 +10,6 @@ commands:
   totaltime:
     description: Show total player played time
     usage: /totaltime
+  resetServerData:
+    description: Resets all data saved in data.json. Fresh new server!
+    usage: /resetserverdata

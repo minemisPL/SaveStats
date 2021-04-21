@@ -18,7 +18,6 @@ public class DataManager {
         File file = new File(SaveStats.getInstance().getDataFolder().getPath() + "/data.json");
         if (!file.exists()){
             try {
-                file.mkdir();
                 file.createNewFile();
             } catch (IOException e) {
                 e.printStackTrace();

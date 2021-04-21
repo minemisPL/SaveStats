@@ -26,6 +26,10 @@ public class ReadFromFile {
 
             JSONObject playersList = (JSONObject) obj;
 
+//            if (obj.toString().equals("")){
+//                return;
+//            }
+
             for (Object key : playersList.keySet()) {
 
                 JSONObject valuesPlayer = (JSONObject) playersList.get(key);
