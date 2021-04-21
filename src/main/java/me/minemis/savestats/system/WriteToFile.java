@@ -25,6 +25,7 @@ public class WriteToFile {
 
             playerJSONObject.put("name", cacheMap.getValue().getName());
             playerJSONObject.put("TotalDamage", cacheMap.getValue().getTotalDamage());
+            playerJSONObject.put("Total time played", cacheMap.getValue().getTotalTime());
 
             playerStats.put(cacheMap.getKey(),playerJSONObject);
             //playerJSONArray.add(playerJSONObject);

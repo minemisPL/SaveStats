@@ -30,44 +30,30 @@ public class ReadFromFile {
 
                 JSONObject valuesPlayer = (JSONObject) playersList.get(key);
                 String name = (String) valuesPlayer.get("name");
-                double totalDamage = (double) valuesPlayer.get("TotalDamage");
+                if (!(valuesPlayer.get("TotalDamage") == null)){
+                    double totalDamage = (double) valuesPlayer.get("TotalDamage");
+                    dataManager.getPlayerCache(name).addTotalDamage(totalDamage);
 
-                dataManager.getPlayerCache(name).addTotalDamage(totalDamage);
-
-                ServerCache largestDamage =  SaveStats.getInstance().getLargestDamage();
-
-                if (largestDamage.getLargestDamage() < totalDamage ){
-                    largestDamage.setLargestDamage(totalDamage);
+                    ServerCache largestDamage =  SaveStats.getInstance().getLargestDamage();
+                    if (largestDamage.getLargestDamage() < totalDamage ){
+                        largestDamage.setLargestDamage(totalDamage);
+                    }
+                }
+                else {
+                    dataManager.getPlayerCache(name).addTotalDamage(0);
                 }
 
-                //SaveStats saveStats = (SaveStats) Bukkit.getServer().getPluginManager().getPlugin("SaveStats");
-                //WorldEdit worldEdit = (WorldEdit) Bukkit.getServer().getPluginManager().getPlugin("WorldEdit");
 
-                //Instancja worldedita
-                //WorldEdit.getInstance();//i tak mają getInstance xD ale ciii
-                //jeśli jakieś API pluginu nie ma getInstance() możesz w ten sposób pobrać ją
-                //Po co ją pobierać? Co można z nią zrobić?
-                //Możesz wykorzystać wszystkie metody z tej instancji
-                //EditSessionFactory editSessionFactory = worldEdit.getEditSessionFactory();
-                //editSessionFactory.getEditSession(worldEdit.get), 100);
-                //???!?!?!??
-                // tak można pobrać główną instację każdego pluginu
-                //Po co mi ona tutaj?nwxD
-
-                //Wszystko w pętli podczas wczytywnia pliku XDD
-
-                //Dobra dobra cwaniaczku chcę teraz spróbować zrobić nową porządkną fukncje!!!!
+                if (!(valuesPlayer.get("Total time played") == null)){
+                    long totalTime = (long) valuesPlayer.get("Total time played");
+                    dataManager.getPlayerCache(name).setTotalTime(totalTime);
+                }
+                else {
+                    dataManager.getPlayerCache(name).setTotalTime(0);
+                }
             }
-
         } catch (ParseException | IOException e) {
-            e.printStackTrace();//ej jest jakieś zadanie?
-             //Sam nie wiem, ale raczej nie :P
-            //ona coś mówiła?
-            //Zapytam Oskara Oskar mówi, że nic nie było;
+            e.printStackTrace();
         }
-
     }
-    //Puki to działa daj mi się pobawić, ok? Zrobię swoje dodatkowe funkcje! I powiem Ci jak mi wyjebie tona błędów :3
-
 }
-//???

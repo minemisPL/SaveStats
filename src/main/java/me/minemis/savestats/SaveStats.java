@@ -1,10 +1,14 @@
 package me.minemis.savestats;
 
+import me.minemis.savestats.commands.Showtime;
+import me.minemis.savestats.commands.TotalTime;
+import me.minemis.savestats.listeners.PlayerQuit;
 import me.minemis.savestats.system.ServerCache;
 import me.minemis.savestats.listeners.DmgCounter;
 import me.minemis.savestats.listeners.PlayerJoin;
 import me.minemis.savestats.system.DataManager;
 import me.minemis.savestats.system.WriteToFile;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -23,9 +27,14 @@ public class SaveStats extends JavaPlugin {
         dataManager = new DataManager();
         pm = this.getServer().getPluginManager();
 
-        pm.registerEvents(new PlayerJoin(), this);
-        pm.registerEvents(new DmgCounter(), this);
+        PluginCommand showtime = this.getCommand("showtime");
+        PluginCommand totaltime = this.getCommand("totaltime");
 
+        pm.registerEvents(new PlayerJoin(), this);
+        pm.registerEvents(new PlayerQuit(), this);
+        pm.registerEvents(new DmgCounter(), this);
+        showtime.setExecutor(new Showtime());
+        totaltime.setExecutor(new TotalTime());
     }
 
     @Override
