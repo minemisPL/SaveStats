@@ -1,9 +1,9 @@
 package me.minemis.savestats;
 
+import me.minemis.savestats.system.ServerCache;
 import me.minemis.savestats.listeners.DmgCounter;
 import me.minemis.savestats.listeners.PlayerJoin;
 import me.minemis.savestats.system.DataManager;
-import me.minemis.savestats.system.ReadFromFile;
 import me.minemis.savestats.system.WriteToFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -13,11 +13,13 @@ public class SaveStats extends JavaPlugin {
     private DataManager dataManager;
     private static SaveStats instance;
     PluginManager pm;
+    private ServerCache serverCache;
 
     @Override
     public void onEnable() {
         instance = this;
 
+        serverCache = new ServerCache();
         dataManager = new DataManager();
         pm = this.getServer().getPluginManager();
 
@@ -42,5 +44,9 @@ public class SaveStats extends JavaPlugin {
 
     public DataManager getDataManager() {
         return dataManager;
+    }
+
+    public ServerCache getLargestDamage(){
+        return serverCache;
     }
 }

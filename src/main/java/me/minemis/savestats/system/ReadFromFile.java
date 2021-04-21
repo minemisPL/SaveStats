@@ -1,9 +1,6 @@
 package me.minemis.savestats.system;
 
-import com.sk89q.worldedit.EditSessionFactory;
-import com.sk89q.worldedit.WorldEdit;
 import me.minemis.savestats.SaveStats;
-import org.bukkit.Bukkit;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -36,6 +33,12 @@ public class ReadFromFile {
                 double totalDamage = (double) valuesPlayer.get("TotalDamage");
 
                 dataManager.getPlayerCache(name).addTotalDamage(totalDamage);
+
+                ServerCache largestDamage =  SaveStats.getInstance().getLargestDamage();
+
+                if (largestDamage.getLargestDamage() < totalDamage ){
+                    largestDamage.setLargestDamage(totalDamage);
+                }
 
                 //SaveStats saveStats = (SaveStats) Bukkit.getServer().getPluginManager().getPlugin("SaveStats");
                 //WorldEdit worldEdit = (WorldEdit) Bukkit.getServer().getPluginManager().getPlugin("WorldEdit");
