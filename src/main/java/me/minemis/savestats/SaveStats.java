@@ -4,6 +4,7 @@ import me.minemis.savestats.commands.ResetServerData;
 import me.minemis.savestats.commands.Showtime;
 import me.minemis.savestats.commands.TotalTime;
 import me.minemis.savestats.listeners.PlayerQuit;
+import me.minemis.savestats.listeners.Weather;
 import me.minemis.savestats.system.ServerCache;
 import me.minemis.savestats.listeners.DmgCounter;
 import me.minemis.savestats.listeners.PlayerJoin;
@@ -35,6 +36,7 @@ public class SaveStats extends JavaPlugin {
         pm.registerEvents(new PlayerJoin(), this);
         pm.registerEvents(new PlayerQuit(), this);
         pm.registerEvents(new DmgCounter(), this);
+        pm.registerEvents(new Weather(), this);
 
         showtime.setExecutor(new Showtime());
         totaltime.setExecutor(new TotalTime());

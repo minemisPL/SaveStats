@@ -26,9 +26,6 @@ public class ReadFromFile {
 
             JSONObject playersList = (JSONObject) obj;
 
-//            if (obj.toString().equals("")){
-//                return;
-//            }
 
             for (Object key : playersList.keySet()) {
 
@@ -57,7 +54,7 @@ public class ReadFromFile {
                 }
             }
         } catch (ParseException | IOException e) {
-            e.printStackTrace();
+            System.out.println("File is empty or corrupted. Generating new file (Normal for resetserverdata command)");
         }
     }
 }
