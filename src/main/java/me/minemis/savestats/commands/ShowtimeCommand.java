@@ -21,20 +21,17 @@ public class ShowtimeCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-
-        if (!(sender instanceof Player)) return false;
+        if (!(sender instanceof Player)) {
+            return false;
+        }
 
         Player player = (Player) sender;
 
-        try {
-            player.sendMessage("Time played: " + getTime(player));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
+        player.sendMessage("Time played: " + getTime(player));
         return true;
     }
-    public String getTime(Player player) throws FileNotFoundException {
+
+    public String getTime(Player player) {
 
         DataManager dataManager = saveStats.getDataManager();
         PlayerCache playerCache = dataManager.getPlayerCache(player.getName());
