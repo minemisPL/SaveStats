@@ -5,6 +5,7 @@ import me.minemis.savestats.system.ServerCache;
 import me.minemis.savestats.system.DataManager;
 import me.minemis.savestats.system.PlayerCache;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -14,22 +15,31 @@ import java.util.logging.Logger;
 
 public class DmgCounter implements Listener {
 
+    private final SaveStats saveStats;
+
+    public DmgCounter(SaveStats saveStats) {
+        this.saveStats = saveStats;
+    }
+
     @EventHandler
     public void onHit(EntityDamageByEntityEvent event){
-        if (event.getDamager() instanceof Player){
+        if (!(event.getDamager() instanceof Player)) {
+            return;
+        }
 
-            DataManager dataManager = SaveStats.getInstance().getDataManager();
-            PlayerCache playerCache = dataManager.getPlayerCache(((Player) event.getDamager()).getPlayer().getName());
-            playerCache.addTotalDamage(event.getDamage());
-            Logger log = Bukkit.getLogger();
+        if (!(event.getEntity() instanceof LivingEntity)) {
+            return;
+        }
 
-            ServerCache largestDamage =  SaveStats.getInstance().getLargestDamage();
-            if (largestDamage.getLargestDamage() < playerCache.getTotalDamage() ){
-                largestDamage.setLargestDamage(playerCache.getTotalDamage());
-            }
-            log.info("Damage: " + event.getDamage());
-            log.info("Total Damage: " + playerCache.getTotalDamage());
-            log.info("Largest Damage: " + SaveStats.getInstance().getLargestDamage().getLargestDamage());
+        Player player = (Player) event.getDamager();
+        DataManager dataManager = saveStats.getDataManager();
+        PlayerCache playerCache = dataManager.getPlayerCache(player.getName());
+        ServerCache largestDamage =  saveStats.getServerCache();
+
+        playerCache.addTotalDamage(event.getDamage());
+
+        if (largestDamage.getLargestDamage() < playerCache.getTotalDamage() ){
+            largestDamage.setLargestDamage(playerCache.getTotalDamage());
         }
     }
 }

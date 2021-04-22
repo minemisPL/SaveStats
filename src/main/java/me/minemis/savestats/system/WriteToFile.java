@@ -1,17 +1,21 @@
 package me.minemis.savestats.system;
 
 import me.minemis.savestats.SaveStats;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 public class WriteToFile {
 
     private FileWriter file;
+
+    private final SaveStats saveStats;
+
+    public WriteToFile(SaveStats saveStats) {
+        this.saveStats = saveStats;
+    }
 
     public void writeToDataJSON(DataManager dataManager) {
 
@@ -33,8 +37,8 @@ public class WriteToFile {
 
 
         try {
-
-            file = new FileWriter(SaveStats.getInstance().getDataFolder().getPath() + "/data.json");
+            dataManager.createIfNotExistFileJSON();
+            file = new FileWriter(saveStats.getDataFolder().getPath() + "/data.json");
             file.write(playerStats.toJSONString());
 
         }

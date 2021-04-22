@@ -8,9 +8,15 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 public class PlayerQuit implements Listener {
 
+    private final SaveStats saveStats;
+
+    public PlayerQuit(SaveStats saveStats) {
+        this.saveStats = saveStats;
+    }
+
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent e){
-        PlayerCache playerCache = SaveStats.getInstance().getDataManager().getPlayerCache(e.getPlayer().getName());
+        PlayerCache playerCache = saveStats.getDataManager().getPlayerCache(e.getPlayer().getName());
         playerCache.setSessionTime(System.currentTimeMillis() - playerCache.getLastLogin());
 
         playerCache.addTotalTime(playerCache.getSessionTime());

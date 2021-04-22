@@ -11,50 +11,51 @@ import java.io.IOException;
 public class ReadFromFile {
 
     private final DataManager dataManager;
+    private final SaveStats saveStats;
 
-    public ReadFromFile(DataManager dataManager) {
+    public ReadFromFile(DataManager dataManager, SaveStats saveStats) {
         this.dataManager = dataManager;
+        this.saveStats = saveStats;
     }
 
     public void readDataJSON(){
-        JSONParser jsonParser = new JSONParser();
-
         try {
-            FileReader reader = new FileReader(SaveStats.getInstance().getDataFolder().getPath() + "/data.json");
-
+            JSONParser jsonParser = new JSONParser();
+            FileReader reader = new FileReader(saveStats.getDataFolder().getPath() + "/data.json");
+            ServerCache serverCache =  saveStats.getServerCache();
             Object obj = jsonParser.parse(reader);
-
             JSONObject playersList = (JSONObject) obj;
 
-
             for (Object key : playersList.keySet()) {
-
                 JSONObject valuesPlayer = (JSONObject) playersList.get(key);
                 String name = (String) valuesPlayer.get("name");
-                if (!(valuesPlayer.get("TotalDamage") == null)){
-                    double totalDamage = (double) valuesPlayer.get("TotalDamage");
-                    dataManager.getPlayerCache(name).addTotalDamage(totalDamage);
+                PlayerCache playerCache = dataManager.getPlayerCache(name);
 
-                    ServerCache largestDamage =  SaveStats.getInstance().getLargestDamage();
-                    if (largestDamage.getLargestDamage() < totalDamage ){
-                        largestDamage.setLargestDamage(totalDamage);
-                    }
-                }
-                else {
-                    dataManager.getPlayerCache(name).addTotalDamage(0);
+                Object objectTotalDamage = valuesPlayer.get("TotalDamage");
+
+                if (objectTotalDamage == null) {
+                    objectTotalDamage = 0.0D;
                 }
 
+                double totalDamage = (double) objectTotalDamage;
 
-                if (!(valuesPlayer.get("Total time played") == null)){
-                    long totalTime = (long) valuesPlayer.get("Total time played");
-                    dataManager.getPlayerCache(name).setTotalTime(totalTime);
+                if (serverCache.getLargestDamage() < totalDamage) {
+                    serverCache.setLargestDamage(totalDamage);
                 }
-                else {
-                    dataManager.getPlayerCache(name).setTotalTime(0);
+
+                playerCache.addTotalDamage(totalDamage);
+
+                Object objectTotalTimePlayed = valuesPlayer.get("Total time played");
+
+                if (objectTotalTimePlayed == null){
+                    objectTotalTimePlayed = 0L;
                 }
+
+                long totalTime = (long) objectTotalTimePlayed;
+                playerCache.setTotalTime(totalTime);
             }
         } catch (ParseException | IOException e) {
-            System.out.println("File is empty or corrupted. Generating new file (Normal for resetserverdata command)");
+            e.printStackTrace();
         }
     }
 }

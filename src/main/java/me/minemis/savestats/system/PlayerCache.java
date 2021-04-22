@@ -4,17 +4,15 @@ public class PlayerCache {
 
     private final String name;
 
-    private double totalDamage = 0;
+    private double totalDamage = 0.0D;
 
     private long sessionTime = 0L;
-    private long lastLogin;
+    private long lastLogin = 0L;
     private long totalTime = 0L;
-
 
     protected PlayerCache(String name) {
         this.name = name;
     }
-
 
     public String getName() {
         return name;
@@ -47,11 +45,20 @@ public class PlayerCache {
     public void setTotalTime(long totalTime) {
         this.totalTime = totalTime;
     }
+
     public void addTotalDamage(double totalDamage) {
         this.totalDamage = this.totalDamage + totalDamage;
     }
+
     public void addTotalTime(long totaltime){
         this.totalTime = (this.totalTime + totaltime);
+    }
+
+    public void clearData() {
+        totalDamage = 0.0D; // <- Hey programmer! This value is double. Please don't forget!
+        sessionTime = 0L;
+        lastLogin = 0L;
+        totalTime = 0L;
     }
 }
 

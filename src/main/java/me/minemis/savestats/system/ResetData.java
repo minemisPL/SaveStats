@@ -17,25 +17,39 @@ public class ResetData {
 
     private File original;
 
-    public void resetDataFile() throws IOException {
+    private final SaveStats saveStats;
 
-        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
-        Date date = new Date(System.currentTimeMillis());
+    public ResetData(SaveStats saveStats) {
+        this.saveStats = saveStats;
+    }
 
-        original = new File(SaveStats.getInstance().getDataFolder().getPath() + "/data.json");
+    public void resetDataFile() {
+        try {
+            SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
+            Date date = new Date(System.currentTimeMillis());
 
-        File file = new File(SaveStats.getInstance().getDataFolder().getPath() + "/dataBackup" + formatter.format(date) + ".json");
-        file.createNewFile();
+            original = new File(saveStats.getDataFolder().getPath() + "/data.json");
 
-        Path copied = Paths.get(file.getPath());
-        Path originalPath = Paths.get(original.getPath());
-        Files.copy(originalPath, copied, StandardCopyOption.REPLACE_EXISTING);
+            File file = new File(saveStats.getDataFolder().getPath() + "/dataBackup" + formatter.format(date) + ".json");
 
-        if (original.delete()){
+            file.createNewFile();
+
+            Path copied = Paths.get(file.getPath());
+            Path originalPath = Paths.get(original.getPath());
+            Files.copy(originalPath, copied, StandardCopyOption.REPLACE_EXISTING);
             Logger log = Bukkit.getLogger();
-            log.info("Data file has been reset");
 
-            new WriteToFile().writeToDataJSON(new DataManager());
+            if (!original.delete()) {
+                log.warning("Idk what happened Bro");
+            }
+
+            log.info("Data file has been reset");
+            saveStats.getDataManager().clearData();
+
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

@@ -1,67 +1,55 @@
 package me.minemis.savestats;
 
-import me.minemis.savestats.commands.ResetServerData;
-import me.minemis.savestats.commands.Showtime;
-import me.minemis.savestats.commands.TotalTime;
+import me.minemis.savestats.commands.ResetServerDataCommand;
+import me.minemis.savestats.commands.ShowtimeCommand;
+import me.minemis.savestats.commands.TotalTimeCommand;
 import me.minemis.savestats.listeners.PlayerQuit;
-import me.minemis.savestats.listeners.Weather;
+import me.minemis.savestats.listeners.WeatherChange;
 import me.minemis.savestats.system.ServerCache;
 import me.minemis.savestats.listeners.DmgCounter;
 import me.minemis.savestats.listeners.PlayerJoin;
 import me.minemis.savestats.system.DataManager;
 import me.minemis.savestats.system.WriteToFile;
-import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class SaveStats extends JavaPlugin {
 
     private DataManager dataManager;
-    private static SaveStats instance;
-    PluginManager pm;
     private ServerCache serverCache;
 
     @Override
     public void onEnable() {
-        instance = this;
+        serverCache = new ServerCache(this);
+        dataManager = new DataManager(this);
 
-        serverCache = new ServerCache();
-        dataManager = new DataManager();
-        pm = this.getServer().getPluginManager();
+        PluginManager pm = this.getServer().getPluginManager();
 
-        PluginCommand showtime = this.getCommand("showtime");
-        PluginCommand totaltime = this.getCommand("totaltime");
-        PluginCommand resetServerData = this.getCommand("resetServerData");
+        pm.registerEvents(new PlayerJoin(this), this);
+        pm.registerEvents(new PlayerQuit(this), this);
+        pm.registerEvents(new DmgCounter(this), this);
+        pm.registerEvents(new WeatherChange(this), this);
 
-        pm.registerEvents(new PlayerJoin(), this);
-        pm.registerEvents(new PlayerQuit(), this);
-        pm.registerEvents(new DmgCounter(), this);
-        pm.registerEvents(new Weather(), this);
-
-        showtime.setExecutor(new Showtime());
-        totaltime.setExecutor(new TotalTime());
-        resetServerData.setExecutor(new ResetServerData());
+        this.getCommand("showtime").setExecutor(new ShowtimeCommand(this));
+        this.getCommand("totaltime").setExecutor(new TotalTimeCommand(this));
+        this.getCommand("resetServerData").setExecutor(new ResetServerDataCommand(this));
     }
 
     @Override
     public void onDisable() {
         try {
-            new WriteToFile().writeToDataJSON(getDataManager());
+            new WriteToFile(this).writeToDataJSON(getDataManager());
         } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
 
-    public static SaveStats getInstance() {
-        return instance;
-    }
-
     public DataManager getDataManager() {
         return dataManager;
     }
 
-    public ServerCache getLargestDamage(){
+    public ServerCache getServerCache() {
         return serverCache;
     }
 }

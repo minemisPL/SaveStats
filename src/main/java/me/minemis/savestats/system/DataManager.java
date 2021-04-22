@@ -1,7 +1,6 @@
 package me.minemis.savestats.system;
 
 import me.minemis.savestats.SaveStats;
-import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,18 +12,28 @@ import java.util.Map;
 public class DataManager {
 
     private final Map<String, PlayerCache> playerCacheMap = new HashMap<>();
+    private final SaveStats saveStats;
 
-    public DataManager(){
-        File file = new File(SaveStats.getInstance().getDataFolder().getPath() + "/data.json");
-        if (!file.exists()){
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+    public DataManager(SaveStats saveStats){
+        this.saveStats = saveStats;
+        createIfNotExistFileJSON();
+        new ReadFromFile(this, saveStats).readDataJSON();
+    }
+
+    public void createIfNotExistFileJSON() {
+        File folder = new File(this.saveStats.getDataFolder().getPath());
+        File file = new File(folder.getPath() + "/data.json");
+
+        if (file.exists()){
+            return;
         }
 
-        new ReadFromFile(this).readDataJSON();
+        try {
+            folder.mkdir();
+            file.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public PlayerCache getPlayerCache(String playerName) {
@@ -44,5 +53,11 @@ public class DataManager {
 
     public Map<String, PlayerCache> getPlayerCacheMap() {
         return playerCacheMap;
+    }
+
+    public void clearData() {
+        for (PlayerCache playerCache : playerCacheMap.values()) {
+            playerCache.clearData();
+        }
     }
 }

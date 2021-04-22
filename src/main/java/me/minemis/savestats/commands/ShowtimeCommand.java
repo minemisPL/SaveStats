@@ -11,8 +11,13 @@ import org.bukkit.entity.Player;
 import java.io.FileNotFoundException;
 import java.util.concurrent.TimeUnit;
 
-public class Showtime implements CommandExecutor {
+public class ShowtimeCommand implements CommandExecutor {
 
+    private final SaveStats saveStats;
+
+    public ShowtimeCommand(SaveStats saveStats) {
+        this.saveStats = saveStats;
+    }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -29,9 +34,9 @@ public class Showtime implements CommandExecutor {
 
         return true;
     }
-    public static String getTime(Player player) throws FileNotFoundException {
+    public String getTime(Player player) throws FileNotFoundException {
 
-        DataManager dataManager = SaveStats.getInstance().getDataManager();
+        DataManager dataManager = saveStats.getDataManager();
         PlayerCache playerCache = dataManager.getPlayerCache(player.getName());
 
         long currentTime = System.currentTimeMillis() - playerCache.getLastLogin();
